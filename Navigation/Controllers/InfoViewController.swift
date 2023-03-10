@@ -11,7 +11,7 @@ final class InfoViewController: UIViewController {
     private lazy var backButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
         button.setTitle("Go back", for: .normal)
-        button.layer.cornerRadius = 12
+        button.layer.cornerRadius = 13
         button.backgroundColor = .black
         return button
     }()
