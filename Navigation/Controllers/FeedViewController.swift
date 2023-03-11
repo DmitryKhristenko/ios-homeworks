@@ -12,7 +12,7 @@ final class FeedViewController: UIViewController {
     private lazy var button: UIButton = {
         let button = UIButton()
         button.backgroundColor = UIColor(red: 0/255, green: 173/255, blue: 181/255, alpha: 1.0)
-        button.layer.cornerRadius = 12
+        button.layer.cornerRadius = 13
         button.setTitle("Go to post", for: .normal)
         button.setTitleColor(UIColor(red: 227/255, green: 253/255, blue: 253/255, alpha: 1.0), for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
