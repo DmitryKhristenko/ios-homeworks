@@ -12,11 +12,12 @@
 		B581687229B9D33000A52DE0 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B581687129B9D33000A52DE0 /* FeedViewController.swift */; };
 		B581687729B9D33800A52DE0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B581687629B9D33800A52DE0 /* Assets.xcassets */; };
 		B581687A29B9D33800A52DE0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B581687829B9D33800A52DE0 /* LaunchScreen.storyboard */; };
-		B581688229B9D8BF00A52DE0 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B581688129B9D8BF00A52DE0 /* ProfileViewController.swift */; };
 		B581688429B9F93700A52DE0 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B581688329B9F93600A52DE0 /* PostViewController.swift */; };
 		B581688729B9FA9200A52DE0 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = B581688629B9FA9200A52DE0 /* Post.swift */; };
 		B581688929BAC9D500A52DE0 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B581688829BAC9D500A52DE0 /* InfoViewController.swift */; };
 		B581688B29BB000600A52DE0 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = B581688A29BB000500A52DE0 /* .gitignore */; };
+		B581688E29CA134000A52DE0 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B581688D29CA134000A52DE0 /* ProfileHeaderView.swift */; };
+		B581689029CA138400A52DE0 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B581688F29CA138400A52DE0 /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,11 +28,12 @@
 		B581687629B9D33800A52DE0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B581687929B9D33800A52DE0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B581687B29B9D33800A52DE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B581688129B9D8BF00A52DE0 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		B581688329B9F93600A52DE0 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		B581688629B9FA9200A52DE0 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		B581688829BAC9D500A52DE0 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		B581688A29BB000500A52DE0 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		B581688D29CA134000A52DE0 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
+		B581688F29CA138400A52DE0 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 		B581686C29B9D33000A52DE0 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				B581688C29CA12F300A52DE0 /* Profile */,
 				B581688529B9F93A00A52DE0 /* Controllers */,
 				B581688629B9FA9200A52DE0 /* Post.swift */,
 				B581686D29B9D33000A52DE0 /* AppDelegate.swift */,
@@ -80,11 +83,19 @@
 			isa = PBXGroup;
 			children = (
 				B581687129B9D33000A52DE0 /* FeedViewController.swift */,
-				B581688129B9D8BF00A52DE0 /* ProfileViewController.swift */,
 				B581688329B9F93600A52DE0 /* PostViewController.swift */,
 				B581688829BAC9D500A52DE0 /* InfoViewController.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		B581688C29CA12F300A52DE0 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				B581688D29CA134000A52DE0 /* ProfileHeaderView.swift */,
+				B581688F29CA138400A52DE0 /* ProfileViewController.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -160,11 +171,12 @@
 			files = (
 				B581687229B9D33000A52DE0 /* FeedViewController.swift in Sources */,
 				B581686E29B9D33000A52DE0 /* AppDelegate.swift in Sources */,
-				B581688229B9D8BF00A52DE0 /* ProfileViewController.swift in Sources */,
 				B581688929BAC9D500A52DE0 /* InfoViewController.swift in Sources */,
 				B581688729B9FA9200A52DE0 /* Post.swift in Sources */,
 				B581687029B9D33000A52DE0 /* SceneDelegate.swift in Sources */,
+				B581689029CA138400A52DE0 /* ProfileViewController.swift in Sources */,
 				B581688429B9F93700A52DE0 /* PostViewController.swift in Sources */,
+				B581688E29CA134000A52DE0 /* ProfileHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
