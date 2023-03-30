@@ -8,7 +8,7 @@
 import UIKit
 
 final class ProfileHeaderView: UIView {
-    private lazy var imageView: UIImageView = {
+    private lazy var avatarImageView: UIImageView = {
         let v = UIImageView()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.image = UIImage(named: "cat")
@@ -19,7 +19,7 @@ final class ProfileHeaderView: UIView {
         v.layer.masksToBounds = false
         return v
     }()
-    private lazy var headingLabel: UILabel = {
+    private lazy var fullNameLabel: UILabel = {
         let v = UILabel()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.text = "Hipster Cat"
@@ -47,7 +47,7 @@ final class ProfileHeaderView: UIView {
         v.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
         return v
     }()
-    private lazy var statusButton: UIButton = {
+    private lazy var setStatusButton: UIButton = {
         let v = UIButton()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.backgroundColor = .systemBlue
@@ -72,14 +72,14 @@ final class ProfileHeaderView: UIView {
     }
     override func layoutSubviews() {
         super.layoutSubviews()
-        imageView.roundedImage()
+        avatarImageView.roundedImage()
     }
     private func setupView() {
-        addSubview(imageView)
-        addSubview(headingLabel)
+        addSubview(avatarImageView)
+        addSubview(fullNameLabel)
         addSubview(statusLabel)
         addSubview(statusTextField)
-        addSubview(statusButton)
+        addSubview(setStatusButton)
         clipsToBounds = true
         setupConstraints()
     }
@@ -98,35 +98,22 @@ final class ProfileHeaderView: UIView {
     }
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-            imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            imageView.widthAnchor.constraint(equalToConstant: 150),
-            imageView.heightAnchor.constraint(equalToConstant: 150),
-            headingLabel.topAnchor.constraint(equalTo: topAnchor, constant: 27),
-            headingLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 15),
-            statusLabel.topAnchor.constraint(equalTo: headingLabel.bottomAnchor, constant: 16),
-            statusLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 15),
+            avatarImageView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            avatarImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            avatarImageView.widthAnchor.constraint(equalToConstant: 125),
+            avatarImageView.heightAnchor.constraint(equalToConstant: 125),
+            fullNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 27),
+            fullNameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 15),
+            statusLabel.topAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 16),
+            statusLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 15),
             statusTextField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 12),
-            statusTextField.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16),
+            statusTextField.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
             statusTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             statusTextField.heightAnchor.constraint(equalToConstant: 40),
-            statusButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 16),
-            statusButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            statusButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            statusButton.heightAnchor.constraint(equalToConstant: 50)
+            setStatusButton.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 16),
+            setStatusButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            setStatusButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            setStatusButton.heightAnchor.constraint(equalToConstant: 50)
         ])
-    }
-}
-extension UIImageView {
-    func roundedImage() {
-        self.layer.cornerRadius = self.frame.size.width / 2
-        self.clipsToBounds = true
-    }
-}
-extension UITextField {
-    func setLeftPaddingPoints(_ amount:CGFloat){
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: amount, height: self.frame.size.height))
-        self.leftView = paddingView
-        self.leftViewMode = .always
     }
 }
