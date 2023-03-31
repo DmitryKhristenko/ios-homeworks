@@ -13,14 +13,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func createFeedViewController() -> UINavigationController {
         let feedViewController = FeedViewController()
         feedViewController.title = "Feed"
-        feedViewController.tabBarItem = UITabBarItem(title: "Feed", image: UIImage(systemName: "doc.text.below.ecg.rtl"), tag: 0)
+        feedViewController.tabBarItem = UITabBarItem(title: "Feed", image: UIImage(systemName: "doc.richtext"), tag: 0)
         return UINavigationController(rootViewController: feedViewController)
     }
     private func createProfileViewController() -> UINavigationController {
-        let profileViewController = ProfileViewController()
-        profileViewController.title = "Profile"
-        profileViewController.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "studentdesk"), tag: 1)
-        return UINavigationController(rootViewController: profileViewController)
+        let logInViewController = LogInViewController()
+        logInViewController.title = "Profile"
+        logInViewController.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "studentdesk"), tag: 1)
+        return UINavigationController(rootViewController: logInViewController)
     }
      func createTabBarController() -> UITabBarController {
         let tabBarController = UITabBarController()
