@@ -17,12 +17,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return UINavigationController(rootViewController: feedViewController)
     }
     private func createProfileViewController() -> UINavigationController {
-        let logInViewController = LogInViewController()
+        let logInViewController = LoginViewController()
         logInViewController.title = "Profile"
         logInViewController.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "studentdesk"), tag: 1)
-        return UINavigationController(rootViewController: logInViewController)
+        let navigationController = UINavigationController(rootViewController: logInViewController)
+        navigationController.navigationBar.isHidden = true
+        return navigationController
     }
-     func createTabBarController() -> UITabBarController {
+    func createTabBarController() -> UITabBarController {
         let tabBarController = UITabBarController()
         UITabBar.appearance().backgroundColor = UIColor(red: 113/255, green: 201/255, blue: 206/255, alpha: 1.0)
         tabBarController.viewControllers = [createFeedViewController(), createProfileViewController()]
