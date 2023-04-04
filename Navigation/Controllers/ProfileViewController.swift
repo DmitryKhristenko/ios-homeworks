@@ -8,7 +8,9 @@
 import UIKit
 
 final class ProfileViewController: UIViewController {
+    
     private let profileHeaderView = ProfileHeaderView()
+    
     private var newButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = .systemBlue
@@ -21,10 +23,12 @@ final class ProfileViewController: UIViewController {
         $0.layer.shadowOpacity = 0.7
         return $0
     }(UIButton())
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
     }
+    
     private func setupView() {
         view.backgroundColor = .lightGray
         view.addSubview(profileHeaderView)
@@ -32,6 +36,7 @@ final class ProfileViewController: UIViewController {
         profileHeaderView.translatesAutoresizingMaskIntoConstraints = false
         setupConstraints()
     }
+    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             profileHeaderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -43,4 +48,5 @@ final class ProfileViewController: UIViewController {
             newButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8)
         ])
     }
+    
 }

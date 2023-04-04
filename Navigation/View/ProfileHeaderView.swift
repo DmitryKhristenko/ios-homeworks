@@ -8,72 +8,77 @@
 import UIKit
 
 final class ProfileHeaderView: UIView {
+    
     private lazy var avatarImageView: UIImageView = {
-        let v = UIImageView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.image = UIImage(named: "cat")
-        v.roundedImage()
-        v.contentMode = .scaleAspectFit
-        v.layer.borderWidth = 3.0
-        v.layer.borderColor = UIColor.white.cgColor
-        v.layer.masksToBounds = false
-        return v
-    }()
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.image = UIImage(named: "cat")
+        $0.roundedImage()
+        $0.contentMode = .scaleAspectFit
+        $0.layer.borderWidth = 3.0
+        $0.layer.borderColor = UIColor.white.cgColor
+        $0.layer.masksToBounds = false
+        return $0
+    }(UIImageView())
+    
     private lazy var fullNameLabel: UILabel = {
-        let v = UILabel()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.text = "Hipster Cat"
-        v.font = UIFont.boldSystemFont(ofSize: 18)
-        return v
-    }()
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.text = "Hipster Cat"
+        $0.font = UIFont.boldSystemFont(ofSize: 18)
+        return $0
+    }(UILabel())
+    
     private lazy var statusLabel: UILabel = {
-        let v = UILabel()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.text = "Waiting for something"
-        v.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        v.textColor = .gray
-        return v
-    }()
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.text = "Waiting for something"
+        $0.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        $0.textColor = .gray
+        return $0
+    }(UILabel())
+    
     private lazy var statusTextField: UITextField = {
-        let v = UITextField()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.placeholder = "type here"
-        v.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        v.textColor = .black
-        v.backgroundColor = .white
-        v.setLeftPaddingPoints(5)
-        v.layer.borderWidth = 1.0
-        v.layer.cornerRadius = 12.0
-        v.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
-        return v
-    }()
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.placeholder = "type here"
+        $0.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        $0.textColor = .black
+        $0.backgroundColor = .white
+        $0.setLeftPaddingPoints(5)
+        $0.layer.borderWidth = 1.0
+        $0.layer.cornerRadius = 12.0
+        $0.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
+        return $0
+    }(UITextField())
+    
     private lazy var setStatusButton: UIButton = {
-        let v = UIButton()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.backgroundColor = .systemBlue
-        v.setTitle("Set status", for: .normal)
-        v.layer.cornerRadius = 4.0
-        v.layer.shadowOffset.height = 4.0
-        v.layer.shadowOffset.width = 4.0
-        v.layer.shadowRadius = 4.0
-        v.layer.shadowColor = UIColor.black.cgColor
-        v.layer.shadowOpacity = 0.7
-        v.addTarget(self, action: #selector(statusButtonPressed), for: .touchUpInside)
-        return v
-    }()
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.backgroundColor = .systemBlue
+        $0.setTitle("Set status", for: .normal)
+        $0.layer.cornerRadius = 4.0
+        $0.layer.shadowOffset.height = 4.0
+        $0.layer.shadowOffset.width = 4.0
+        $0.layer.shadowRadius = 4.0
+        $0.layer.shadowColor = UIColor.black.cgColor
+        $0.layer.shadowOpacity = 0.7
+        $0.addTarget(self, action: #selector(statusButtonPressed), for: .touchUpInside)
+        return $0
+    }(UIButton())
+    
     private var statusText: String?
+    
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         setupView()
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         avatarImageView.roundedImage()
     }
+    
     private func setupView() {
         addSubview(avatarImageView)
         addSubview(fullNameLabel)
@@ -83,6 +88,7 @@ final class ProfileHeaderView: UIView {
         clipsToBounds = true
         setupConstraints()
     }
+    
     @objc private func statusButtonPressed() {
         if statusTextField.text != "" {
             statusLabel.text = statusTextField.text
@@ -92,10 +98,12 @@ final class ProfileHeaderView: UIView {
         }
         print("statusLabel.text = \(String(describing: statusLabel.text))")
     }
+    
     @objc private func statusTextChanged() {
         statusText = statusTextField.text
         print("statusText = \(String(describing: statusText))")
     }
+    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             avatarImageView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
@@ -116,4 +124,5 @@ final class ProfileHeaderView: UIView {
             setStatusButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
+    
 }

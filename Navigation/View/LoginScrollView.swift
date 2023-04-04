@@ -12,15 +12,19 @@ protocol LoginScrollViewDelegate: AnyObject {
 }
 
 final class LoginScrollView: UIView {
+    
     weak var loginScrollViewDelegate: LoginScrollViewDelegate?
+    
     let scrollView: UIScrollView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UIScrollView())
+    
     private lazy var contentView: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UIView())
+    
     private lazy var logoImageView: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.image = UIImage(named: "logo")
@@ -28,6 +32,7 @@ final class LoginScrollView: UIView {
         $0.clipsToBounds = true
         return $0
     }(UIImageView())
+    
     private lazy var verticalStackView: UIStackView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.addArrangedSubview(loginTextField)
@@ -39,6 +44,7 @@ final class LoginScrollView: UIView {
         $0.axis = .vertical
         return $0
     }(UIStackView())
+    
     private lazy var loginTextField: UITextField = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.placeholder = "Email or phone"
@@ -50,6 +56,7 @@ final class LoginScrollView: UIView {
         $0.borderStyle = .roundedRect
         return $0
     }(UITextField())
+    
     private lazy var passwordTextField: UITextField = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.placeholder = "Password"
@@ -62,7 +69,8 @@ final class LoginScrollView: UIView {
         $0.borderStyle = .roundedRect
         return $0
     }(UITextField())
-     lazy var loginButton: UIButton = {
+    
+    lazy var loginButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = UIColor(hex: "#4885CC")
         $0.setTitle("Log In", for: .normal)
@@ -70,6 +78,7 @@ final class LoginScrollView: UIView {
         $0.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         return $0
     }(UIButton())
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
@@ -78,9 +87,11 @@ final class LoginScrollView: UIView {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         contentView.addGestureRecognizer(tapGesture)
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     private func setupView() {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -88,70 +99,79 @@ final class LoginScrollView: UIView {
         contentView.addSubview(verticalStackView)
         contentView.addSubview(loginButton)
     }
+    
     @objc private func loginButtonPressed() {
         loginScrollViewDelegate?.pushProfileVC()
         loginTextField.text = ""
         passwordTextField.text = ""
         dismissKeyboard()
     }
+    
     @objc private func dismissKeyboard() {
         endEditing(true)
     }
+    
     lazy var portraitConstraints: [NSLayoutConstraint] = {
-        var constraints = [NSLayoutConstraint]()
-        constraints.append(scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor))
-        constraints.append(scrollView.leadingAnchor.constraint(equalTo: leadingAnchor))
-        constraints.append(scrollView.trailingAnchor.constraint(equalTo: trailingAnchor))
-        constraints.append(scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor))
-        constraints.append(contentView.topAnchor.constraint(equalTo: scrollView.topAnchor))
-        constraints.append(contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor))
-        constraints.append(contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor))
-        constraints.append(contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor))
-        constraints.append(contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor))
-        constraints.append(logoImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 100))
-        constraints.append(logoImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor))
-        constraints.append(logoImageView.heightAnchor.constraint(lessThanOrEqualToConstant: 120))
-        constraints.append(logoImageView.widthAnchor.constraint(lessThanOrEqualToConstant: 120))
-        constraints.append(verticalStackView.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 100))
-        constraints.append(verticalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12))
-        constraints.append(verticalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12))
-        constraints.append(loginButton.heightAnchor.constraint(equalToConstant: 50))
-        constraints.append(loginButton.topAnchor.constraint(equalTo: verticalStackView.bottomAnchor, constant: 18))
-        constraints.append(loginButton.leadingAnchor.constraint(equalTo: verticalStackView.leadingAnchor))
-        constraints.append(loginButton.trailingAnchor.constraint(equalTo: verticalStackView.trailingAnchor))
-        constraints.append(loginButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor))
+        var constraints = [
+            scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            logoImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 150),
+            logoImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            logoImageView.heightAnchor.constraint(lessThanOrEqualToConstant: 120),
+            logoImageView.widthAnchor.constraint(lessThanOrEqualToConstant: 120),
+            verticalStackView.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 100),
+            verticalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
+            verticalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
+            loginButton.heightAnchor.constraint(equalToConstant: 50),
+            loginButton.topAnchor.constraint(equalTo: verticalStackView.bottomAnchor, constant: 18),
+            loginButton.leadingAnchor.constraint(equalTo: verticalStackView.leadingAnchor),
+            loginButton.trailingAnchor.constraint(equalTo: verticalStackView.trailingAnchor),
+            loginButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ]
         return constraints
     }()
+    
     lazy var landscapeConstraints: [NSLayoutConstraint] = {
-        var constraints = [NSLayoutConstraint]()
-        constraints.append(scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor))
-        constraints.append(scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor))
-        constraints.append(scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor))
-        constraints.append(scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor))
-        constraints.append(contentView.topAnchor.constraint(equalTo: scrollView.topAnchor))
-        constraints.append(contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor))
-        constraints.append(contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor))
-        constraints.append(contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor))
-        constraints.append(contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor))
-        constraints.append(logoImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20))
-        constraints.append(logoImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor))
-        constraints.append(logoImageView.heightAnchor.constraint(lessThanOrEqualToConstant: 120))
-        constraints.append(logoImageView.widthAnchor.constraint(lessThanOrEqualToConstant: 120))
-        constraints.append(verticalStackView.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 50))
-        constraints.append(verticalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12))
-        constraints.append(verticalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12))
-        constraints.append(loginButton.heightAnchor.constraint(equalToConstant: 50))
-        constraints.append(loginButton.topAnchor.constraint(equalTo: verticalStackView.bottomAnchor, constant: 14))
-        constraints.append(loginButton.leadingAnchor.constraint(equalTo: verticalStackView.leadingAnchor))
-        constraints.append(loginButton.trailingAnchor.constraint(equalTo: verticalStackView.trailingAnchor))
-        constraints.append(loginButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor))
+        var constraints = [
+            scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            logoImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            logoImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            logoImageView.heightAnchor.constraint(lessThanOrEqualToConstant: 120),
+            logoImageView.widthAnchor.constraint(lessThanOrEqualToConstant: 120),
+            verticalStackView.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 50),
+            verticalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
+            verticalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
+            loginButton.heightAnchor.constraint(equalToConstant: 50),
+            loginButton.topAnchor.constraint(equalTo: verticalStackView.bottomAnchor, constant: 14),
+            loginButton.leadingAnchor.constraint(equalTo: verticalStackView.leadingAnchor),
+            loginButton.trailingAnchor.constraint(equalTo: verticalStackView.trailingAnchor),
+            loginButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ]
         return constraints
     }()
+    
 }
 
 extension LoginScrollView: UITextFieldDelegate {
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         endEditing(true)
         return true
     }
+    
 }
