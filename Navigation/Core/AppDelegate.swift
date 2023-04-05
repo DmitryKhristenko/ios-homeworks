@@ -15,14 +15,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func createFeedViewController() -> UINavigationController {
         let feedViewController = FeedViewController()
         feedViewController.title = "Feed"
-        feedViewController.tabBarItem = UITabBarItem(title: "Feed", image: UIImage(systemName: "doc.richtext"), tag: 0)
+        feedViewController.tabBarItem = UITabBarItem(title: "Feed", image: UIImage(systemName: "house.fill"), tag: 0)
         return UINavigationController(rootViewController: feedViewController)
     }
     
     private func createProfileViewController() -> UINavigationController {
         let logInViewController = LoginViewController()
         logInViewController.title = "Profile"
-        logInViewController.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "studentdesk"), tag: 1)
+        logInViewController.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person.fill"), tag: 1)
         let navigationController = UINavigationController(rootViewController: logInViewController)
         navigationController.navigationBar.isHidden = true
         return navigationController

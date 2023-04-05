@@ -22,7 +22,7 @@ final class ProfileHeaderView: UIView {
     
     private lazy var fullNameLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.text = "Hipster Cat"
+        $0.text = "Call me 'Orange'"
         $0.font = UIFont.boldSystemFont(ofSize: 18)
         return $0
     }(UILabel())
@@ -44,11 +44,12 @@ final class ProfileHeaderView: UIView {
         $0.setLeftPaddingPoints(5)
         $0.layer.borderWidth = 1.0
         $0.layer.cornerRadius = 12.0
+        $0.delegate = self
         $0.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
         return $0
     }(UITextField())
     
-    private lazy var setStatusButton: UIButton = {
+    lazy var setStatusButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = .systemBlue
         $0.setTitle("Set status", for: .normal)
@@ -64,10 +65,13 @@ final class ProfileHeaderView: UIView {
     
     private var statusText: String?
     
-    init() {
-        super.init(frame: .zero)
-        translatesAutoresizingMaskIntoConstraints = false
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupView()
+        backgroundColor = .systemGray6
+        // tap gesture recognizer to dismiss keyboard
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        addGestureRecognizer(tapGesture)
     }
     
     required init?(coder: NSCoder) {
@@ -77,6 +81,10 @@ final class ProfileHeaderView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         avatarImageView.roundedImage()
+    }
+    
+    @objc private func dismissKeyboard() {
+        endEditing(true)
     }
     
     private func setupView() {
@@ -90,18 +98,24 @@ final class ProfileHeaderView: UIView {
     }
     
     @objc private func statusButtonPressed() {
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+            self.setStatusButton.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+        }, completion: { _ in
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+                self.setStatusButton.transform = .identity
+            })
+        })
         if statusTextField.text != "" {
             statusLabel.text = statusTextField.text
             statusTextField.text = ""
+            dismissKeyboard()
         } else {
             statusLabel.text = "Waiting for something"
         }
-        print("statusLabel.text = \(String(describing: statusLabel.text))")
     }
     
     @objc private func statusTextChanged() {
         statusText = statusTextField.text
-        print("statusText = \(String(describing: statusText))")
     }
     
     private func setupConstraints() {
@@ -116,13 +130,28 @@ final class ProfileHeaderView: UIView {
             statusLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 15),
             statusTextField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 12),
             statusTextField.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
-            statusTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            statusTextField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
             statusTextField.heightAnchor.constraint(equalToConstant: 40),
             setStatusButton.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 16),
-            setStatusButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            setStatusButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            setStatusButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            setStatusButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
             setStatusButton.heightAnchor.constraint(equalToConstant: 50)
         ])
+    }
+    
+}
+
+extension ProfileHeaderView: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if statusTextField.text != "" {
+            statusLabel.text = textField.text
+            statusTextField.text = ""
+            dismissKeyboard()
+        } else {
+            statusLabel.text = "Waiting for something"
+        }
+        return true
     }
     
 }

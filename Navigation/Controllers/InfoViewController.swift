@@ -32,7 +32,6 @@ final class InfoViewController: UIViewController {
     @objc private func backAction() {
         let alert = UIAlertController(title: "", message: "Are you sure?", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Yes", style: .default) { _ in
-            print(#function)
             self.dismiss(animated: true)
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)

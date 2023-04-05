@@ -73,8 +73,8 @@ final class LoginViewController: UIViewController {
     
 }
 
+// MARK: - LoginScrollViewDelegate
 extension LoginViewController: LoginScrollViewDelegate {
-    
     func pushProfileVC() {
         let profileViewController = ProfileViewController()
         navigationController?.pushViewController(profileViewController, animated: true)

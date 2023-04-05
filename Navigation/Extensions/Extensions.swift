@@ -8,26 +8,21 @@
 import UIKit
 
 extension UIImageView {
-    
     func roundedImage() {
         self.layer.cornerRadius = self.frame.size.width / 2
         self.clipsToBounds = true
     }
-    
 }
 
 extension UITextField {
-    
     func setLeftPaddingPoints(_ amount:CGFloat){
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: amount, height: self.frame.size.height))
         self.leftView = paddingView
         self.leftViewMode = .always
     }
-    
 }
 
 extension UIColor {
-    
     convenience init?(hex: String) {
         let r, g, b: CGFloat
         let offset = hex.hasPrefix("#") ? 1 : 0
@@ -49,6 +44,11 @@ extension UIColor {
             return nil
         }
     }
-    
+}
+
+extension UIView {
+    static var identifier: String {
+        String(describing: self)
+    }
 }
 

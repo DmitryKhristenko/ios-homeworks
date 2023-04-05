@@ -9,8 +9,6 @@ import UIKit
 
 final class FeedViewController: UIViewController {
     
-    private var post = Post(title: "Post")
-    
     private lazy var verticalStackView: UIStackView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.addArrangedSubview(buttonOne)
@@ -64,7 +62,6 @@ final class FeedViewController: UIViewController {
     
     @objc private func buttonAction() {
         let postViewController = PostViewController()
-        postViewController.titlePost = post.title
         self.navigationController?.pushViewController(postViewController, animated: true)
     }
     
