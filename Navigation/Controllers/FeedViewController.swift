@@ -8,7 +8,7 @@
 import UIKit
 
 final class FeedViewController: UIViewController {
-    private var post = Post(title: "Post")
+    
     private lazy var verticalStackView: UIStackView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.addArrangedSubview(buttonOne)
@@ -17,6 +17,7 @@ final class FeedViewController: UIViewController {
         $0.spacing = 10.0
         return $0
     }(UIStackView())
+    
     private lazy var buttonOne: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = UIColor(red: 0/255, green: 173/255, blue: 181/255, alpha: 1.0)
@@ -27,6 +28,7 @@ final class FeedViewController: UIViewController {
         $0.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         return $0
     }(UIButton())
+    
     private lazy var buttonTwo: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = UIColor(red: 100/255, green: 155/255, blue: 225/255, alpha: 1.0)
@@ -38,15 +40,18 @@ final class FeedViewController: UIViewController {
         $0.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         return $0
     }(UIButton())
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
     }
+    
     private func setupView() {
         view.backgroundColor = UIColor(red: 227/255, green: 253/255, blue: 253/255, alpha: 1.0)
         view.addSubview(verticalStackView)
         setupConstraints()
     }
+    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             verticalStackView.widthAnchor.constraint(equalToConstant: 170),
@@ -54,9 +59,10 @@ final class FeedViewController: UIViewController {
             verticalStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
+    
     @objc private func buttonAction() {
         let postViewController = PostViewController()
-        postViewController.titlePost = post.title
         self.navigationController?.pushViewController(postViewController, animated: true)
     }
+    
 }
