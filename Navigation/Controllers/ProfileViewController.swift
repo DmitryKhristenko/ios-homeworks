@@ -25,6 +25,7 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        PhotosTableViewCell.delegate = self
         setupView()
     }
     
@@ -41,6 +42,14 @@ final class ProfileViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 39),
         ])
+    }
+}
+
+// MARK: - PhotosTableViewCellDelegate
+extension ProfileViewController: PhotosTableViewCellDelegate {
+    func pushPhotosVC() {
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.pushViewController(PhotosViewController(), animated: true)
     }
 }
 

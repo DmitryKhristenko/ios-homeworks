@@ -70,22 +70,28 @@ final class PostTableViewCell: UITableViewCell {
     private func setupView() {
         [contentWhiteView, authorLabel, postImageView, descriptionLabel, likesLabel, viewsLabel].forEach { contentView.addSubview($0) }
         NSLayoutConstraint.activate([
+            
             contentWhiteView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
             contentWhiteView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             contentWhiteView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             contentWhiteView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            
             authorLabel.topAnchor.constraint(equalTo: contentWhiteView.topAnchor, constant: 10),
             authorLabel.leadingAnchor.constraint(equalTo: descriptionLabel.leadingAnchor),
             authorLabel.trailingAnchor.constraint(equalTo: contentWhiteView.trailingAnchor, constant: -5),
             authorLabel.bottomAnchor.constraint(equalTo: postImageView.topAnchor, constant: -5),
+            
             postImageView.leadingAnchor.constraint(equalTo: contentWhiteView.leadingAnchor),
             postImageView.trailingAnchor.constraint(equalTo: contentWhiteView.trailingAnchor),
             postImageView.bottomAnchor.constraint(equalTo: descriptionLabel.topAnchor, constant: -10),
+            
             descriptionLabel.leadingAnchor.constraint(equalTo: contentWhiteView.leadingAnchor, constant: 10),
             descriptionLabel.trailingAnchor.constraint(equalTo: contentWhiteView.trailingAnchor, constant: -10),
             descriptionLabel.bottomAnchor.constraint(equalTo: likesLabel.topAnchor, constant: -15),
+            
             likesLabel.leadingAnchor.constraint(equalTo: descriptionLabel.leadingAnchor),
             likesLabel.bottomAnchor.constraint(equalTo: contentWhiteView.bottomAnchor, constant: -10),
+            
             viewsLabel.trailingAnchor.constraint(equalTo: descriptionLabel.trailingAnchor),
             viewsLabel.bottomAnchor.constraint(equalTo: contentWhiteView.bottomAnchor, constant: -10)
         ])

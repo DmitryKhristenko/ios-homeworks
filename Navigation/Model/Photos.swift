@@ -8,5 +8,15 @@
 import UIKit
 
 struct Photos {
-    let photosArray = [UIImage(named: "p1")]
+    
+    static func makePhotosModel() -> [UIImage] {
+        var photosArray = [UIImage()]
+        for i in 1...19 {
+            if let image = UIImage(named: "p\(i)") {
+                photosArray.append(image)
+            }
+        }
+        return photosArray
+    }
+    
 }
