@@ -37,7 +37,7 @@ final class PhotosTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         horizontalCollectionView.dataSource = self
         horizontalCollectionView.delegate = self
-        horizontalCollectionView.isPagingEnabled = true // Enable paging behavior
+        horizontalCollectionView.isPagingEnabled = true
         setupView()
     }
     
@@ -47,7 +47,6 @@ final class PhotosTableViewCell: UITableViewCell {
     
     @objc private func arrowButtonPressed() {
         PhotosTableViewCell.delegate?.pushPhotosVC()
-        print(#function)
     }
     
     private func setupView() {
@@ -84,9 +83,9 @@ extension PhotosTableViewCell: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotosCollectionViewCell.identifier, for: indexPath) as! PhotosCollectionViewCell
-        cell.setupCell(index: indexPath.item)
-        return cell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotosCollectionViewCell.identifier, for: indexPath) as? PhotosCollectionViewCell
+        cell?.setupCell(index: indexPath.item)
+        return cell ?? UICollectionViewCell()
     }
     
 }
@@ -95,33 +94,20 @@ extension PhotosTableViewCell: UICollectionViewDataSource {
 
 extension PhotosTableViewCell: UICollectionViewDelegateFlowLayout {
     
-    private var sideInset: CGFloat { return 8 }
+    private var sideInset: CGFloat { 8 }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        switch collectionView {
-            
-        case horizontalCollectionView:
-            let height = collectionView.bounds.height - sideInset
-            let width = (collectionView.bounds.width - sideInset * 5) / 4
-            return CGSize(width: width, height: height)
-            
-        default:
-            return .zero
-        }
+        let height = horizontalCollectionView.bounds.height - sideInset
+        let width = (horizontalCollectionView.bounds.width - sideInset * 5) / 4
+        return CGSize(width: width, height: height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return sideInset
+        sideInset
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         UIEdgeInsets(top: .zero, left: sideInset, bottom: .zero, right: sideInset)
     }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Секция \(indexPath.section), ячейка \(indexPath.item)")
-        PhotosTableViewCell.delegate?.pushPhotosVC()
-        print(#function)
-    }
-    
+        
 }

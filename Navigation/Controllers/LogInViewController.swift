@@ -110,8 +110,7 @@ final class LoginViewController: UIViewController {
         setupConstraints()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(UIResponder.keyboardWillShowNotification)
         NotificationCenter.default.removeObserver(UIResponder.keyboardWillHideNotification)
         activateOrDeactivateConstraints(shouldActivate: false, constraints: [scrollViewLeadingLandscape, scrollViewTrailingLandscape, logoImageViewLandscape, verticalStackViewLandscape, loginButtonLandscape, scrollViewLeadingPortrait, scrollViewTrailingPortrait, logoImageViewPortrait, verticalStackViewPortrait, loginButtonPortrait])
@@ -144,11 +143,10 @@ final class LoginViewController: UIViewController {
     }
     
     @objc private func loginButtonPressed() {
+        navigationController?.pushViewController(ProfileViewController(), animated: true)
         dismissKeyboard()
         loginTextField.text = ""
         passwordTextField.text = ""
-        navigationController?.pushViewController(ProfileViewController(), animated: true)
-        
     }
     
     private func activateOrDeactivateConstraints(shouldActivate: Bool, constraints: [NSLayoutConstraint?]) {
@@ -187,9 +185,6 @@ final class LoginViewController: UIViewController {
             loginButtonLandscape = loginButton.topAnchor.constraint(equalTo: verticalStackView.bottomAnchor, constant: 14)
             
             activateOrDeactivateConstraints(shouldActivate: true, constraints: [scrollViewLeadingLandscape, scrollViewTrailingLandscape, logoImageViewLandscape, verticalStackViewLandscape, loginButtonLandscape])
-            
-        case .unknown:
-            print("unknown constraints")
             
         default:
             break

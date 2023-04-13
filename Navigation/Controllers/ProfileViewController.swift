@@ -19,6 +19,7 @@ final class ProfileViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.identifier)
         tableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: PhotosTableViewCell.identifier)
+        tableView.showsVerticalScrollIndicator = false
         tableView.allowsSelection = false
         return tableView
     }()
@@ -66,13 +67,12 @@ extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 { // Special cell for zero index
             let cell = tableView.dequeueReusableCell(withIdentifier: PhotosTableViewCell.identifier, for: indexPath)
-            // Configure the special cell here
             return cell
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifier, for: indexPath) as! PostTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifier, for: indexPath) as? PostTableViewCell
             // Adjust index path to account for the special cell
-            cell.setupCell(model: post[indexPath.section][indexPath.row - 1])
-            return cell
+            cell?.setupCell(model: post[indexPath.section][indexPath.row - 1])
+            return cell ?? UITableViewCell()
         }
     }
     

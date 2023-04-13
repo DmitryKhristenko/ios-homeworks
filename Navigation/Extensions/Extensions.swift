@@ -52,15 +52,15 @@ extension UIView {
     }
 }
 
-extension UIView {
+extension UIResponder {
     func makeCollectionView(scrollDirection: UICollectionView.ScrollDirection) -> UICollectionView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = scrollDirection
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-//        collectionView.backgroundColor = .green
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
         collectionView.register(PhotosCollectionViewCell.self, forCellWithReuseIdentifier: PhotosCollectionViewCell.identifier)
         return collectionView
     }
