@@ -120,18 +120,23 @@ final class ProfileHeaderView: UIView {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
+            // avatarImageView
             avatarImageView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-            avatarImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            avatarImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
             avatarImageView.widthAnchor.constraint(equalToConstant: 125),
             avatarImageView.heightAnchor.constraint(equalToConstant: 125),
+            // fullNameLabel
             fullNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 27),
             fullNameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 15),
+            // statusLabel
             statusLabel.topAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 16),
             statusLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 15),
+            // statusTextField
             statusTextField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 12),
             statusTextField.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
             statusTextField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
             statusTextField.heightAnchor.constraint(equalToConstant: 40),
+            // setStatusButton
             setStatusButton.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 16),
             setStatusButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
             setStatusButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
