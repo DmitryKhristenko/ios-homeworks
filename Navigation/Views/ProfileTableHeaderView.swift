@@ -7,7 +7,17 @@
 
 import UIKit
 
+protocol ProfileHeaderDelegate: AnyObject {
+    func didTapImage(_ image: UIImage?, imageRect: CGRect)
+}
+
 final class ProfileHeaderView: UIView {
+    
+    // MARK: - Properties
+    
+    weak var delegate: ProfileHeaderDelegate?
+    
+    var callBack: ((CGRect) -> Void)?
     
     private lazy var avatarImageView: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -17,6 +27,7 @@ final class ProfileHeaderView: UIView {
         $0.layer.borderWidth = 3.0
         $0.layer.borderColor = UIColor.white.cgColor
         $0.layer.masksToBounds = false
+        $0.isUserInteractionEnabled = true
         return $0
     }(UIImageView())
     
@@ -65,22 +76,38 @@ final class ProfileHeaderView: UIView {
     
     private var statusText: String?
     
+    // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        addGesture()
         setupView()
         backgroundColor = .systemGray6
-        // tap gesture recognizer to dismiss keyboard
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        addGestureRecognizer(tapGesture)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Override Methods
     override func layoutSubviews() {
         super.layoutSubviews()
         avatarImageView.roundedImage()
+    }
+    
+    // MARK: - Private Methods
+    
+    private func addGesture() {
+        let avatarTapGesture = UITapGestureRecognizer(target: self, action: #selector(avatarTapAction))
+        avatarImageView.addGestureRecognizer(avatarTapGesture)
+        // tap gesture recognizer to dismiss keyboard
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func avatarTapAction() {
+        delegate?.didTapImage(avatarImageView.image, imageRect: avatarImageView.frame)
+        callBack?(avatarImageView.frame)
     }
     
     @objc private func dismissKeyboard() {
@@ -120,23 +147,22 @@ final class ProfileHeaderView: UIView {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            // avatarImageView
             avatarImageView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
             avatarImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
             avatarImageView.widthAnchor.constraint(equalToConstant: 125),
             avatarImageView.heightAnchor.constraint(equalToConstant: 125),
-            // fullNameLabel
+            
             fullNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 27),
             fullNameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 15),
-            // statusLabel
+            
             statusLabel.topAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 16),
             statusLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 15),
-            // statusTextField
+            
             statusTextField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 12),
             statusTextField.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
             statusTextField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
             statusTextField.heightAnchor.constraint(equalToConstant: 40),
-            // setStatusButton
+            
             setStatusButton.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 16),
             setStatusButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
             setStatusButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
@@ -146,6 +172,7 @@ final class ProfileHeaderView: UIView {
     
 }
 
+// MARK: - UITextFieldDelegate
 extension ProfileHeaderView: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

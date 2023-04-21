@@ -46,7 +46,6 @@ final class PhotosTableViewCell: UITableViewCell {
         horizontalCollectionView.isPagingEnabled = true
         
         isLandscapeOrientation = deviceOrientation()
-        print("isLandscapeOrientation = \(String(describing: isLandscapeOrientation))")
         setupView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(orientationDidChange), name: UIDevice.orientationDidChangeNotification, object: nil)
