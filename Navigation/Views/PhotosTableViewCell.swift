@@ -7,13 +7,14 @@
 
 import UIKit
 
-protocol PhotosTableViewCellDelegate {
+protocol PhotosTableViewCellDelegate: AnyObject {
     func pushPhotosVC()
 }
 
 final class PhotosTableViewCell: UITableViewCell {
     
-    static var delegate: PhotosTableViewCellDelegate?
+    // MARK: - Properties
+    static weak var delegate: PhotosTableViewCellDelegate?
     
     private lazy var photosLabel: UILabel = {
         $0.font = UIFont.boldSystemFont(ofSize: 24)
@@ -29,20 +30,46 @@ final class PhotosTableViewCell: UITableViewCell {
         return $0
     }(UIButton())
     
-    private lazy var horizontalCollectionView = makeCollectionView(scrollDirection: .horizontal)
+    private var isLandscapeOrientation: Bool?
     
     private lazy var photos = Photos.makePhotosModel()
     
+    // MARK: - View
+    private lazy var horizontalCollectionView = makeCollectionView(scrollDirection: .horizontal)
+    
+    // MARK: - Life Cycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
         horizontalCollectionView.dataSource = self
         horizontalCollectionView.delegate = self
         horizontalCollectionView.isPagingEnabled = true
+        
+        isLandscapeOrientation = deviceOrientation()
         setupView()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(orientationDidChange), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(UIDevice.orientationDidChangeNotification)
+    }
+    
+    // MARK: - Private Methods
+    
+    private func deviceOrientation() -> Bool {
+        return UIApplication.shared.windows.first?.windowScene?.interfaceOrientation.isLandscape == true ? true : false
+    }
+    
+    @objc private func orientationDidChange() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.isLandscapeOrientation = self.deviceOrientation()
+            self.horizontalCollectionView.collectionViewLayout.invalidateLayout()
+        }
     }
     
     @objc private func arrowButtonPressed() {
@@ -94,12 +121,13 @@ extension PhotosTableViewCell: UICollectionViewDataSource {
 
 extension PhotosTableViewCell: UICollectionViewDelegateFlowLayout {
     
-    private var sideInset: CGFloat { 8 }
+    private var sideInset: CGFloat { return 8 }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let height = horizontalCollectionView.bounds.height - sideInset
-        let width = (horizontalCollectionView.bounds.width - sideInset * 5) / 4
-        return CGSize(width: width, height: height)
+        let portraitWidth = (horizontalCollectionView.bounds.width - sideInset * 5) / 4
+        let landscapeWidth = (horizontalCollectionView.bounds.width - sideInset * 5) / 6
+        return isLandscapeOrientation == true ? CGSize(width: landscapeWidth, height: height) : CGSize(width: portraitWidth, height: height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -109,5 +137,5 @@ extension PhotosTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         UIEdgeInsets(top: .zero, left: sideInset, bottom: .zero, right: sideInset)
     }
-        
+    
 }
