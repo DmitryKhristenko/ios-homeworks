@@ -64,4 +64,14 @@ extension UIResponder {
         collectionView.register(PhotosCollectionViewCell.self, forCellWithReuseIdentifier: PhotosCollectionViewCell.identifier)
         return collectionView
     }
+    
+    func shakeAnimation(objectToAnimate: UIView) {
+        let animation = CABasicAnimation(keyPath: "position")
+        animation.duration = 0.05
+        animation.repeatCount = 3
+        animation.autoreverses = true
+        animation.fromValue = NSValue(cgPoint: CGPoint(x: objectToAnimate.center.x - 7, y: objectToAnimate.center.y))
+        animation.toValue = NSValue(cgPoint: CGPoint(x: objectToAnimate.center.x + 7, y: objectToAnimate.center.y))
+        objectToAnimate.layer.add(animation, forKey: "position")
+    }
 }

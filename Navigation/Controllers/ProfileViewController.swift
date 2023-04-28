@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 final class ProfileViewController: UIViewController {
     
@@ -15,33 +16,9 @@ final class ProfileViewController: UIViewController {
     
     private let profileHeaderView = ProfileHeaderView()
     
-    private var initialImageRect: CGRect = .zero
+    private var animation = AnimationForImage()
     
-    private let viewForAnimation: UIView = {
-        let view = UIView(frame: .zero)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .systemGray6
-        view.alpha = 0
-        return view
-    }()
-    
-    private lazy var crossButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImage(systemName: "xmark"), for: .normal)
-        button.backgroundColor = .systemGray2
-        button.alpha = 0
-        button.addTarget(self, action: #selector(crossButtonAction), for: .touchUpInside)
-        return button
-    }()
-    
-    private lazy var animatingImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.clipsToBounds = true
-        return imageView
-    }()
-    
-    private lazy var tableView: UITableView = {
+    private lazy var postTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.dataSource = self
         tableView.delegate = self
@@ -50,95 +27,44 @@ final class ProfileViewController: UIViewController {
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.identifier)
         tableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: PhotosTableViewCell.identifier)
         tableView.showsVerticalScrollIndicator = false
-        tableView.allowsSelection = false
+        tableView.allowsSelection = true
         return tableView
     }()
-
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         PhotosTableViewCell.delegate = self
         setupView()
+        animation.crossButton.addTarget(self, action: #selector(crossButtonAction), for: .touchUpInside)
     }
     
     // MARK: - Private Methods
     
     private func setupView() {
         view.backgroundColor = .white
-        view.addSubview(tableView)
+        view.addSubview(postTableView)
         setupConstraints()
     }
     
-    private func animateImage(_ image: UIImage?, imageFrame: CGRect) {
-        view.addSubview(viewForAnimation)
-        view.addSubview(animatingImageView)
-        viewForAnimation.addSubview(crossButton)
-
-        setupConstraintsForAnimation()
-        
-        animatingImageView.image = image
-        animatingImageView.alpha = 1.0
-        animatingImageView.frame = CGRect(x: imageFrame.origin.x,
-                                          y: imageFrame.origin.y,
-                                          width: imageFrame.width,
-                                          height: imageFrame.height)
-        
-        UIView.animate(withDuration: 0.5) {
-            self.viewForAnimation.alpha = 0.4
-            self.animatingImageView.frame.size = CGSize(width: UIScreen.main.bounds.width - 10,
-                                                        height: UIScreen.main.bounds.width - 10)
-            self.animatingImageView.center = self.view.center
-            self.animatingImageView.layer.cornerRadius = self.animatingImageView.frame.width / 2
-        } completion: { _ in
-            UIView.animate(withDuration: 0.01) {
-                self.crossButton.layer.cornerRadius = self.crossButton.frame.width / 2
-            } completion: { _ in
-                UIView.animate(withDuration: 0.3) {
-                    self.crossButton.alpha = 1
-                }
-            }
-        }
-    }
-    
-    @objc private func crossButtonAction() {
+    @objc func crossButtonAction() {
         UIView.animate(withDuration: 0.3) {
-            self.crossButton.alpha = 0
+            self.animation.crossButton.alpha = 0
         } completion: { _ in
-            self.animateImageToInitial(rect: self.initialImageRect)
-            self.crossButton.removeFromSuperview()
-            self.viewForAnimation.removeFromSuperview()
-        }
-    }
-    
-    private func animateImageToInitial(rect: CGRect) {
-        UIView.animate(withDuration: 0.4) {
-            self.animatingImageView.frame = rect
-        } completion: { _ in
-            self.animatingImageView.removeFromSuperview()
+            self.animation.animateImageToInitial(rect: self.animation.initialImageRect, view: self.view)
+            self.animation.crossButton.removeFromSuperview()
+            self.animation.blurView.removeFromSuperview()
+            self.view.isUserInteractionEnabled = true
         }
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 39),
-        ])
-    }
-    
-    private func setupConstraintsForAnimation() {
-        NSLayoutConstraint.activate([
-            viewForAnimation.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            viewForAnimation.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            viewForAnimation.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            viewForAnimation.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-    
-            crossButton.widthAnchor.constraint(equalToConstant: 30),
-            crossButton.heightAnchor.constraint(equalToConstant: 30),
-            crossButton.topAnchor.constraint(equalTo: viewForAnimation.safeAreaLayoutGuide.topAnchor, constant: 20),
-            crossButton.trailingAnchor.constraint(equalTo: viewForAnimation.safeAreaLayoutGuide.trailingAnchor, constant: -20)
+            postTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            postTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            postTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            postTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 39)
         ])
     }
     
@@ -147,6 +73,7 @@ final class ProfileViewController: UIViewController {
 // MARK: - PhotosTableViewCellDelegate
 
 extension ProfileViewController: PhotosTableViewCellDelegate {
+    
     func pushPhotosVC() {
         navigationController?.navigationBar.isHidden = false
         navigationController?.pushViewController(PhotosViewController(), animated: true)
@@ -179,26 +106,40 @@ extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         profileHeaderView.delegate = self
         profileHeaderView.callBack = { [weak self] rect in
-            self?.initialImageRect = rect
+            self?.animation.initialImageRect = rect
         }
         return profileHeaderView
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return indexPath.row != 0 ? true : false
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            post[indexPath.section].remove(at: indexPath.row - 1)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+    
 }
 
 // MARK: - ProfileHeaderDelegate
 
-extension ProfileViewController: ProfileHeaderDelegate {
+extension ProfileViewController: ImageAnimationDelegate {
     
     func didTapImage(_ image: UIImage?, imageRect: CGRect) {
         
         let rect = profileHeaderView.frame
-        let currentHeaderRect = tableView.convert(rect, to: view)
-        initialImageRect = CGRect(x: imageRect.origin.x,
-                                  y: imageRect.origin.y + currentHeaderRect.origin.y,
-                                  width: imageRect.width,
-                                  height: imageRect.height)
+        let currentHeaderRect = postTableView.convert(rect, to: view)
+        animation.initialImageRect = CGRect(x: imageRect.origin.x,
+                                            y: imageRect.origin.y + currentHeaderRect.origin.y,
+                                            width: imageRect.width,
+                                            height: imageRect.height)
         
-        animateImage(image, imageFrame: initialImageRect)
+        animation.animateImage(image, imageFrame: animation.initialImageRect, view: view, imageHeight: UIScreen.main.bounds.width - 10) {
+            self.animation.animatingImageView.frame.width / 2
+        }
     }
 }
 
@@ -212,4 +153,17 @@ extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         250
     }
+    
+    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        // Disable selection for the first row, enable for all others
+        return indexPath.row == 0 ? false : true
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.row != 0 else { return }
+        guard let safeUrl = URL(string: post[0][indexPath.row - 1].urlToWebPage) else { return }
+        let safariViewController = SFSafariViewController(url: safeUrl)
+        present(safariViewController, animated: true)
+    }
+    
 }

@@ -11,7 +11,7 @@ final class LoginViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let testLogin = "e@e.c"
+    private let testLogin = "E@e.ru"
     private let testPassword = "qwe"
         
     private lazy var scrollView: UIScrollView = {
@@ -48,6 +48,7 @@ final class LoginViewController: UIViewController {
     private lazy var loginTextField: UITextField = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.placeholder = "Email or phone"
+        $0.text = "E@e.ru"
         $0.delegate = self
         $0.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         $0.textColor = .black
@@ -59,6 +60,7 @@ final class LoginViewController: UIViewController {
     
     private lazy var passwordTextField: UITextField = {
         $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.text = "qwe"
         $0.placeholder = "Password"
         $0.delegate = self
         $0.isSecureTextEntry = true
@@ -160,7 +162,7 @@ final class LoginViewController: UIViewController {
         guard let safePasswordTextField = passwordTextField.text else { return }
         switch (safeLoginTextField.isEmpty, safePasswordTextField.isEmpty, isPasswordValid(safePasswordTextField)) {
         case (true, _, _), (_, true, _):
-            shakeAnimation()
+            shakeAnimation(objectToAnimate: verticalStackView)
             redAnimationForTextField(textField: loginTextField)
             redAnimationForTextField(textField: passwordTextField)
         case (_, _, true):
@@ -189,7 +191,7 @@ final class LoginViewController: UIViewController {
                 passwordTextField.text = ""
             }
         case (_, _, false):
-            shakeAnimation()
+            shakeAnimation(objectToAnimate: verticalStackView)
             UIView.animate(withDuration: 1) {
                 self.passwordErrorLabel.alpha = 1
             }
@@ -206,16 +208,6 @@ final class LoginViewController: UIViewController {
     private func isPasswordValid(_ password: String) -> Bool{
         let passwordTest = NSPredicate(format: "SELF MATCHES %@", "^.{3,}$")
         return passwordTest.evaluate(with: password)
-    }
-    
-    private func shakeAnimation() {
-        let animation = CABasicAnimation(keyPath: "position")
-        animation.duration = 0.05
-        animation.repeatCount = 3
-        animation.autoreverses = true
-        animation.fromValue = NSValue(cgPoint: CGPoint(x: verticalStackView.center.x - 7, y: verticalStackView.center.y))
-        animation.toValue = NSValue(cgPoint: CGPoint(x: verticalStackView.center.x + 7, y: verticalStackView.center.y))
-        verticalStackView.layer.add(animation, forKey: "position")
     }
     
     private func redAnimationForTextField(textField: UITextField) {

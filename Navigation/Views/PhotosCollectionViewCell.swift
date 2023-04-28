@@ -17,7 +17,7 @@ final class PhotosCollectionViewCell: UICollectionViewCell {
     }(UIImageView())
     
     func setupCell(index: Int) {
-        photoImageView.image = UIImage(named: "p\(index + 1)")
+        photoImageView.image = Photos.makePhotosModel()[index]
         photoImageView.layer.cornerRadius = 6
         setupView()
     }

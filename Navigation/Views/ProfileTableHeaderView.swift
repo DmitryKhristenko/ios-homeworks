@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol ProfileHeaderDelegate: AnyObject {
+protocol ImageAnimationDelegate: AnyObject {
     func didTapImage(_ image: UIImage?, imageRect: CGRect)
 }
 
@@ -15,7 +15,7 @@ final class ProfileHeaderView: UIView {
     
     // MARK: - Properties
     
-    weak var delegate: ProfileHeaderDelegate?
+    weak var delegate: ImageAnimationDelegate?
     
     var callBack: ((CGRect) -> Void)?
     
@@ -33,7 +33,7 @@ final class ProfileHeaderView: UIView {
     
     private lazy var fullNameLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.text = "Call me 'Orange'"
+        $0.text = "Call me \"Orange\""
         $0.font = UIFont.boldSystemFont(ofSize: 18)
         return $0
     }(UILabel())
@@ -90,6 +90,7 @@ final class ProfileHeaderView: UIView {
     }
     
     // MARK: - Override Methods
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         avatarImageView.roundedImage()
@@ -137,6 +138,7 @@ final class ProfileHeaderView: UIView {
             statusTextField.text = ""
             dismissKeyboard()
         } else {
+            shakeAnimation(objectToAnimate: statusTextField)
             statusLabel.text = "Waiting for something"
         }
     }
@@ -181,6 +183,7 @@ extension ProfileHeaderView: UITextFieldDelegate {
             statusTextField.text = ""
             dismissKeyboard()
         } else {
+            shakeAnimation(objectToAnimate: statusTextField)
             statusLabel.text = "Waiting for something"
         }
         return true

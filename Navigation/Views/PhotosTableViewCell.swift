@@ -14,6 +14,7 @@ protocol PhotosTableViewCellDelegate: AnyObject {
 final class PhotosTableViewCell: UITableViewCell {
     
     // MARK: - Properties
+    
     static weak var delegate: PhotosTableViewCellDelegate?
     
     private lazy var photosLabel: UILabel = {
@@ -35,9 +36,11 @@ final class PhotosTableViewCell: UITableViewCell {
     private lazy var photos = Photos.makePhotosModel()
     
     // MARK: - View
+    
     private lazy var horizontalCollectionView = makeCollectionView(scrollDirection: .horizontal)
     
     // MARK: - Life Cycle
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
