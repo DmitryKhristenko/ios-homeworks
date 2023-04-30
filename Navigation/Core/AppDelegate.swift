@@ -6,11 +6,21 @@
 //
 
 import UIKit
+import CoreData
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    
+    lazy var coreDataStack: CoreDataStack = .init(modelName: "PostEntity")
+    
+    static let sharedAppDelegate: AppDelegate = {
+            guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
+                fatalError("Unexpected app delegate type, did it change? \(String(describing: UIApplication.shared.delegate))")
+            }
+            return delegate
+        }()
     
     private func createFeedViewController() -> UINavigationController {
         let feedViewController = FeedViewController()
@@ -19,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return UINavigationController(rootViewController: feedViewController)
     }
     
-    private func createProfileViewController() -> UINavigationController {
+    private func createLoginViewController() -> UINavigationController {
         let logInViewController = LoginViewController()
         logInViewController.title = "Profile"
         logInViewController.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person.fill"), tag: 1)
@@ -31,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func createTabBarController() -> UITabBarController {
         let tabBarController = UITabBarController()
         UITabBar.appearance().backgroundColor = UIColor(red: 113/255, green: 201/255, blue: 206/255, alpha: 1.0)
-        tabBarController.viewControllers = [createFeedViewController(), createProfileViewController()]
+        tabBarController.viewControllers = [createFeedViewController(), createLoginViewController()]
         return tabBarController
     }
     

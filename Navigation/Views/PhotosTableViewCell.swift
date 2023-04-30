@@ -14,7 +14,8 @@ protocol PhotosTableViewCellDelegate: AnyObject {
 final class PhotosTableViewCell: UITableViewCell {
     
     // MARK: - Properties
-    static weak var delegate: PhotosTableViewCellDelegate?
+    
+    static weak var photosTableViewCellDelegate: PhotosTableViewCellDelegate?
     
     private lazy var photosLabel: UILabel = {
         $0.font = UIFont.boldSystemFont(ofSize: 24)
@@ -35,9 +36,11 @@ final class PhotosTableViewCell: UITableViewCell {
     private lazy var photos = Photos.makePhotosModel()
     
     // MARK: - View
+    
     private lazy var horizontalCollectionView = makeCollectionView(scrollDirection: .horizontal)
     
     // MARK: - Life Cycle
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -73,7 +76,7 @@ final class PhotosTableViewCell: UITableViewCell {
     }
     
     @objc private func arrowButtonPressed() {
-        PhotosTableViewCell.delegate?.pushPhotosVC()
+        PhotosTableViewCell.photosTableViewCellDelegate?.pushPhotosVC()
     }
     
     private func setupView() {
@@ -111,7 +114,7 @@ extension PhotosTableViewCell: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotosCollectionViewCell.identifier, for: indexPath) as? PhotosCollectionViewCell
-        cell?.setupCell(index: indexPath.item)
+        cell?.setupPhotoCell(index: indexPath.item)
         return cell ?? UICollectionViewCell()
     }
     
