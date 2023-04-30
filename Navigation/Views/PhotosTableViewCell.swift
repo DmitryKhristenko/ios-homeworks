@@ -15,7 +15,7 @@ final class PhotosTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     
-    static weak var delegate: PhotosTableViewCellDelegate?
+    static weak var photosTableViewCellDelegate: PhotosTableViewCellDelegate?
     
     private lazy var photosLabel: UILabel = {
         $0.font = UIFont.boldSystemFont(ofSize: 24)
@@ -76,7 +76,7 @@ final class PhotosTableViewCell: UITableViewCell {
     }
     
     @objc private func arrowButtonPressed() {
-        PhotosTableViewCell.delegate?.pushPhotosVC()
+        PhotosTableViewCell.photosTableViewCellDelegate?.pushPhotosVC()
     }
     
     private func setupView() {

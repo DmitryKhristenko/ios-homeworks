@@ -9,8 +9,9 @@ import UIKit
 
 final class FeedViewController: UIViewController {
     
+    // MARK: - Properties
+    
     private lazy var verticalStackView: UIStackView = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
         $0.addArrangedSubview(buttonOne)
         $0.addArrangedSubview(buttonTwo)
         $0.axis = .vertical
@@ -19,7 +20,6 @@ final class FeedViewController: UIViewController {
     }(UIStackView())
     
     private lazy var buttonOne: UIButton = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = UIColor(red: 0/255, green: 173/255, blue: 181/255, alpha: 1.0)
         $0.layer.cornerRadius = 13
         $0.setTitle("First button", for: .normal)
@@ -30,7 +30,6 @@ final class FeedViewController: UIViewController {
     }(UIButton())
     
     private lazy var buttonTwo: UIButton = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = UIColor(red: 100/255, green: 155/255, blue: 225/255, alpha: 1.0)
         $0.layer.cornerRadius = 13
         $0.setTitle("Second button", for: .normal)
@@ -41,14 +40,19 @@ final class FeedViewController: UIViewController {
         return $0
     }(UIButton())
     
+    // MARK: - Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
     }
     
+    // MARK: - Private Methods
+    
     private func setupView() {
         view.backgroundColor = UIColor(red: 227/255, green: 253/255, blue: 253/255, alpha: 1.0)
         view.addSubview(verticalStackView)
+        [verticalStackView, buttonOne, buttonTwo].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         setupConstraints()
     }
     
@@ -61,8 +65,7 @@ final class FeedViewController: UIViewController {
     }
     
     @objc private func buttonAction() {
-        let postViewController = PostViewController()
-        self.navigationController?.pushViewController(postViewController, animated: true)
+        self.navigationController?.pushViewController(PostViewController(), animated: true)
     }
     
 }

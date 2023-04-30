@@ -35,7 +35,8 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        PhotosTableViewCell.delegate = self
+        PhotosTableViewCell.photosTableViewCellDelegate = self
+        PostTableViewCell.heartButtonDelegate = self
         setupView()
         animation.crossButton.addTarget(self, action: #selector(crossButtonAction), for: .touchUpInside)
     }
@@ -59,6 +60,15 @@ final class ProfileViewController: UIViewController {
         }
     }
     
+    private func setupCell(model: Post, cell: PostTableViewCell) {
+        print(#function)
+        cell.authorLabel.text = model.author
+        cell.postImageView.image = UIImage(named: model.image)
+        cell.descriptionLabel.text = model.description
+        cell.likesLabel.text = "Likes: \(model.likes)"
+        cell.viewsLabel.text = "Views: \(model.views)"
+    }
+    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             postTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -80,6 +90,44 @@ extension ProfileViewController: PhotosTableViewCellDelegate {
     }
 }
 
+// MARK: - HeartButtonDelegate
+
+extension ProfileViewController: HeartButtonDelegate {
+    
+    func changeLikesCounter(index: Int) -> Bool {
+        var postOnIndex = self.post[0][index]
+        if postOnIndex.isLiked == true {
+            postOnIndex.likes -= 1
+            postOnIndex.isLiked = false
+        } else {
+            postOnIndex.likes += 1
+            postOnIndex.isLiked = true
+        }
+        self.post[0][index] = postOnIndex
+        return postOnIndex.isLiked
+    }
+    
+}
+
+// MARK: - ProfileHeaderDelegate
+
+extension ProfileViewController: ImageAnimationDelegate {
+    
+    func didTapImage(_ image: UIImage?, imageRect: CGRect) {
+        
+        let rect = profileHeaderView.frame
+        let currentHeaderRect = postTableView.convert(rect, to: view)
+        animation.initialImageRect = CGRect(x: imageRect.origin.x,
+                                            y: imageRect.origin.y + currentHeaderRect.origin.y,
+                                            width: imageRect.width,
+                                            height: imageRect.height)
+        
+        animation.animateImage(image, imageFrame: animation.initialImageRect, view: view, imageHeight: UIScreen.main.bounds.width - 10) {
+            self.animation.animatingImageView.frame.width / 2
+        }
+    }
+}
+
 // MARK: - UITableViewDataSource
 
 extension ProfileViewController: UITableViewDataSource {
@@ -97,8 +145,19 @@ extension ProfileViewController: UITableViewDataSource {
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifier, for: indexPath) as? PostTableViewCell
-            // Adjust index path to account for the special cell
-            cell?.setupCell(model: post[indexPath.section][indexPath.row - 1])
+            guard let safeCell = cell else { return UITableViewCell() }
+            // Adjust index path to account for the cell
+            setupCell(model: post[indexPath.section][indexPath.row - 1], cell: safeCell)
+            safeCell.indexForCounter = indexPath.row - 1
+            
+            if post[indexPath.section][indexPath.row - 1].isLiked {
+                cell?.heartButton.flipLikedState(isLiked: post[indexPath.section][indexPath.row - 1].isLiked)
+            }
+            
+            cell?.buttonTapCallback = { [unowned self] in
+                cell?.heartButton.flipLikedState(isLiked: post[indexPath.section][indexPath.row - 1].isLiked)
+                setupCell(model: post[indexPath.section][indexPath.row - 1], cell: safeCell)
+            }
             return cell ?? UITableViewCell()
         }
     }
@@ -124,25 +183,6 @@ extension ProfileViewController: UITableViewDataSource {
     
 }
 
-// MARK: - ProfileHeaderDelegate
-
-extension ProfileViewController: ImageAnimationDelegate {
-    
-    func didTapImage(_ image: UIImage?, imageRect: CGRect) {
-        
-        let rect = profileHeaderView.frame
-        let currentHeaderRect = postTableView.convert(rect, to: view)
-        animation.initialImageRect = CGRect(x: imageRect.origin.x,
-                                            y: imageRect.origin.y + currentHeaderRect.origin.y,
-                                            width: imageRect.width,
-                                            height: imageRect.height)
-        
-        animation.animateImage(image, imageFrame: animation.initialImageRect, view: view, imageHeight: UIScreen.main.bounds.width - 10) {
-            self.animation.animatingImageView.frame.width / 2
-        }
-    }
-}
-
 // MARK: - UITableViewDelegate
 
 extension ProfileViewController: UITableViewDelegate {
@@ -161,6 +201,12 @@ extension ProfileViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.row != 0 else { return }
+        
+        var selectedPost = self.post[0][indexPath.row - 1]
+        selectedPost.views += 1
+        self.post[0][indexPath.row - 1].views = selectedPost.views
+        tableView.reloadData()
+        
         guard let safeUrl = URL(string: post[0][indexPath.row - 1].urlToWebPage) else { return }
         let safariViewController = SFSafariViewController(url: safeUrl)
         present(safariViewController, animated: true)

@@ -12,9 +12,7 @@ final class PhotosViewController: UIViewController {
     // MARK: - Properties
     
     private var photosModel = Photos.makePhotosModel()
-    
     private var animation = AnimationForImage()
-    
     
     // MARK: - View
     
@@ -25,7 +23,6 @@ final class PhotosViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        animation.crossButton.backgroundColor = .darkGray
         animation.crossButton.addTarget(self, action: #selector(crossButtonAction), for: .touchUpInside)
     }
     
@@ -35,13 +32,14 @@ final class PhotosViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(UIDevice.orientationDidChangeNotification)
         navigationController?.navigationBar.isHidden = true
     }
     
     // MARK: - Private Methods
     
-    @objc func crossButtonAction() {
+    @objc private func crossButtonAction() {
         UIView.animate(withDuration: 0.3) {
             self.animation.crossButton.alpha = 0
             self.animation.animateImageToInitial(rect: self.animation.initialImageRect, view: self.view)
@@ -98,7 +96,6 @@ extension PhotosViewController: ImageAnimationDelegate {
     }
     
 }
-
 
 // MARK: - UICollectionViewDataSource
 

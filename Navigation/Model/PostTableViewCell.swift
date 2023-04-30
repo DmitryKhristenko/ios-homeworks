@@ -7,45 +7,55 @@
 
 import UIKit
 
+protocol HeartButtonDelegate: AnyObject {
+    func changeLikesCounter(index: Int) -> Bool
+}
+
 final class PostTableViewCell: UITableViewCell {
     
     // MARK: - Properties
-        
+    
     private let context = PostEntity(context: AppDelegate.sharedAppDelegate.coreDataStack.managedContext)
+    
+    static weak var heartButtonDelegate: HeartButtonDelegate?
+    
+    var indexForCounter = 0
     
     private lazy var contentWhiteView: UIView = {
         $0.backgroundColor = .white
         return $0
     }(UIView())
     
-    private lazy var authorLabel: UILabel = {
+    lazy var authorLabel: UILabel = {
         $0.font = UIFont.boldSystemFont(ofSize: 22)
         $0.numberOfLines = 0
         return $0
     }(UILabel())
     
-    private lazy var postImageView: UIImageView = {
+    lazy var postImageView: UIImageView = {
         $0.backgroundColor = .black
         $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
         return $0
     }(UIImageView())
     
-    private lazy var descriptionLabel: UILabel = {
+    lazy var descriptionLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         $0.textColor = .gray
         $0.numberOfLines = 0
         return $0
     }(UILabel())
     
-    private lazy var likesLabel: UILabel = {
+    lazy var likesLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         return $0
     }(UILabel())
     
-    private let heartButton = HeartButton()
+    lazy var heartButton = HeartButton()
     
-    private lazy var viewsLabel: UILabel = {
+    var buttonTapCallback: (() -> ())?
+    
+    lazy var viewsLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         return $0
     }(UILabel())
@@ -64,22 +74,27 @@ final class PostTableViewCell: UITableViewCell {
     
     // MARK: - Methods
     
-    @objc private func handleHeartButtonTap(_ sender: UIButton) {
-        guard let button = sender as? HeartButton else { return }
-        
-        context.isLiked = button.flipLikedState()
-        print(context.isLiked)
-        AppDelegate.sharedAppDelegate.coreDataStack.saveContext()
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        resetAnimation()
     }
     
-    func setupCell(model: Post) {
-        authorLabel.text = model.author
-        postImageView.image = UIImage(named: model.image)
-        descriptionLabel.text = model.description
-        likesLabel.text = "Likes: \(model.likes)"
-        viewsLabel.text = "Views: \(model.views)"
-    }
+    func resetAnimation() {
         
+        heartButton.layer.removeAllAnimations()
+        heartButton.transform = .identity
+        heartButton.setUnlikedImage()
+        
+    }
+    
+    @objc private func handleHeartButtonTap(_ sender: UIButton) {
+        guard let button = sender as? HeartButton else { return }
+        let tapIndex = PostTableViewCell.heartButtonDelegate?.changeLikesCounter(index: indexForCounter)
+        print("tapIndex = \(String(describing: tapIndex))")
+        buttonTapCallback?()
+        //        AppDelegate.sharedAppDelegate.coreDataStack.saveContext()
+    }
+    
     private func setupView() {
         [contentWhiteView, authorLabel, postImageView, descriptionLabel, likesLabel, heartButton, viewsLabel].forEach { contentView.addSubview($0); $0.translatesAutoresizingMaskIntoConstraints = false }
         NSLayoutConstraint.activate([
@@ -105,8 +120,8 @@ final class PostTableViewCell: UITableViewCell {
             likesLabel.leadingAnchor.constraint(equalTo: descriptionLabel.leadingAnchor),
             likesLabel.bottomAnchor.constraint(equalTo: contentWhiteView.bottomAnchor, constant: -10),
             
-            heartButton.heightAnchor.constraint(equalToConstant: 25),
-            heartButton.widthAnchor.constraint(equalToConstant: 25),
+            heartButton.heightAnchor.constraint(equalToConstant: 40),
+            heartButton.widthAnchor.constraint(equalToConstant: 40),
             heartButton.leadingAnchor.constraint(equalTo: likesLabel.trailingAnchor, constant: 7),
             heartButton.centerYAnchor.constraint(equalTo: likesLabel.centerYAnchor),
             

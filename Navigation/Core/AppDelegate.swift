@@ -46,6 +46,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        if let storeURL = AppDelegate.sharedAppDelegate.coreDataStack.managedContext.persistentStoreCoordinator?.persistentStores.first?.url {
+            print(storeURL.absoluteString)
+        }
         return true
     }
     

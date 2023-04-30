@@ -32,7 +32,8 @@ struct AnimationForImage {
     
     // MARK: - Methods
     
-    func animateImage(_ image: UIImage?, imageFrame: CGRect, view: UIView, imageHeight: CGFloat, getCornerRadius: @escaping () -> CGFloat) {
+    func animateImage(_ image: UIImage?, imageFrame: CGRect, view: UIView,
+                      imageHeight: CGFloat, getCornerRadius: @escaping() -> CGFloat) {
         let blurEffect = UIBlurEffect(style: .regular)
         blurView.effect = blurEffect
         blurView.frame = view.bounds
@@ -84,8 +85,8 @@ struct AnimationForImage {
     
     private func setupConstraintsForAnimation(view: UIView) {
         NSLayoutConstraint.activate([
-            crossButton.widthAnchor.constraint(equalToConstant: 30),
-            crossButton.heightAnchor.constraint(equalToConstant: 30),
+            crossButton.widthAnchor.constraint(equalToConstant: 40),
+            crossButton.heightAnchor.constraint(equalToConstant: 40),
             crossButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             crossButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
         ])
