@@ -9,13 +9,15 @@ import UIKit
 
 final class HeartButton: UIButton {
     
+    // MARK: - Properties
+    
     private let unlikedImage = UIImage(named: "heart_empty")
     private let likedImage = UIImage(named: "heart_filled")
     private let unlikedScale: CGFloat = 0.7
     private let likedScale: CGFloat = 1.3
     
-    private let postEntity = PostEntity(context: AppDelegate.sharedAppDelegate.coreDataStack.managedContext)
-            
+    // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setImage(unlikedImage, for: .normal)
@@ -25,16 +27,17 @@ final class HeartButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Methods
+    
+    func setImage(isLikedImage: Bool) {
+        isLikedImage ? setImage(likedImage, for: .normal) : setImage(unlikedImage, for: .normal)
+    }
+    
     func flipLikedState(isLiked: Bool) {
         animate(isHeartLiked: isLiked)
     }
     
-    func setUnlikedImage() {
-        setImage(unlikedImage, for: .normal)
-    }
-    
     private func animate(isHeartLiked: Bool) {
-        print("animate = \(isHeartLiked)")
         UIView.animate(withDuration: 0.1, animations: {
             let newImage = isHeartLiked ? self.likedImage : self.unlikedImage
             let newScale = isHeartLiked ? self.likedScale : self.unlikedScale

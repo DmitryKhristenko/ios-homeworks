@@ -7,11 +7,14 @@
 
 import UIKit
 import SafariServices
+import CoreData
 
 final class ProfileViewController: UIViewController {
     
     // MARK: - Properties
     
+    private var postData = [PostEntity]()
+
     private var post = Post.makePostModel()
     
     private let profileHeaderView = ProfileHeaderView()
@@ -35,21 +38,55 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupCoreData()
+        setupView()
         PhotosTableViewCell.photosTableViewCellDelegate = self
         PostTableViewCell.heartButtonDelegate = self
-        setupView()
-        animation.crossButton.addTarget(self, action: #selector(crossButtonAction), for: .touchUpInside)
     }
     
     // MARK: - Private Methods
     
+    private func setupCoreData() {
+        let fetchRequest = NSFetchRequest<PostEntity>(entityName: "PostEntity")
+        
+        do {
+            postData = try AppDelegate.sharedAppDelegate.coreDataStack.managedContext.fetch(fetchRequest) as [PostEntity]
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        if postData.count == 0 {
+            for data in post[0] {
+                
+                let postEntity = NSEntityDescription.insertNewObject(forEntityName: "PostEntity", into: AppDelegate.sharedAppDelegate.coreDataStack.managedContext) as? PostEntity
+                postEntity?.author = data.author
+                postEntity?.postDescription = data.postDescription
+                postEntity?.image = data.image
+                postEntity?.likes = Int32(data.likes)
+                postEntity?.views = Int32(data.views)
+                postEntity?.urlToWebPage = data.urlToWebPage
+                postEntity?.isLiked = data.isLiked
+                guard let safeEntity = postEntity else { return }
+                postData.append(safeEntity)
+                
+                do {
+                    try AppDelegate.sharedAppDelegate.coreDataStack.managedContext.save()
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+        }
+        
+    }
+    
     private func setupView() {
         view.backgroundColor = .white
         view.addSubview(postTableView)
+        animation.crossButton.addTarget(self, action: #selector(crossButtonAction), for: .touchUpInside)
         setupConstraints()
     }
     
-    @objc func crossButtonAction() {
+    @objc private func crossButtonAction() {
         UIView.animate(withDuration: 0.3) {
             self.animation.crossButton.alpha = 0
         } completion: { _ in
@@ -58,15 +95,6 @@ final class ProfileViewController: UIViewController {
             self.animation.blurView.removeFromSuperview()
             self.view.isUserInteractionEnabled = true
         }
-    }
-    
-    private func setupCell(model: Post, cell: PostTableViewCell) {
-        print(#function)
-        cell.authorLabel.text = model.author
-        cell.postImageView.image = UIImage(named: model.image)
-        cell.descriptionLabel.text = model.description
-        cell.likesLabel.text = "Likes: \(model.likes)"
-        cell.viewsLabel.text = "Views: \(model.views)"
     }
     
     private func setupConstraints() {
@@ -94,8 +122,8 @@ extension ProfileViewController: PhotosTableViewCellDelegate {
 
 extension ProfileViewController: HeartButtonDelegate {
     
-    func changeLikesCounter(index: Int) -> Bool {
-        var postOnIndex = self.post[0][index]
+    func changeLikesCounter(index: Int) {
+        let postOnIndex = self.postData[index]
         if postOnIndex.isLiked == true {
             postOnIndex.likes -= 1
             postOnIndex.isLiked = false
@@ -103,8 +131,7 @@ extension ProfileViewController: HeartButtonDelegate {
             postOnIndex.likes += 1
             postOnIndex.isLiked = true
         }
-        self.post[0][index] = postOnIndex
-        return postOnIndex.isLiked
+        self.postData[index] = postOnIndex
     }
     
 }
@@ -147,18 +174,12 @@ extension ProfileViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifier, for: indexPath) as? PostTableViewCell
             guard let safeCell = cell else { return UITableViewCell() }
             // Adjust index path to account for the cell
-            setupCell(model: post[indexPath.section][indexPath.row - 1], cell: safeCell)
-            safeCell.indexForCounter = indexPath.row - 1
-            
-            if post[indexPath.section][indexPath.row - 1].isLiked {
-                cell?.heartButton.flipLikedState(isLiked: post[indexPath.section][indexPath.row - 1].isLiked)
+            safeCell.setupPostCell(model: postData[indexPath.row - 1], isAnimated: false)
+            safeCell.buttonTapCallback = { [unowned self] in
+                changeLikesCounter(index: indexPath.row - 1)
+                safeCell.setupPostCell(model: postData[indexPath.row - 1], isAnimated: true)
             }
-            
-            cell?.buttonTapCallback = { [unowned self] in
-                cell?.heartButton.flipLikedState(isLiked: post[indexPath.section][indexPath.row - 1].isLiked)
-                setupCell(model: post[indexPath.section][indexPath.row - 1], cell: safeCell)
-            }
-            return cell ?? UITableViewCell()
+            return safeCell
         }
     }
     
@@ -202,12 +223,19 @@ extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.row != 0 else { return }
         
-        var selectedPost = self.post[0][indexPath.row - 1]
+        let selectedPost = self.postData[indexPath.row - 1]
         selectedPost.views += 1
-        self.post[0][indexPath.row - 1].views = selectedPost.views
+        self.postData[indexPath.row - 1].views = selectedPost.views
         tableView.reloadData()
         
-        guard let safeUrl = URL(string: post[0][indexPath.row - 1].urlToWebPage) else { return }
+        do {
+            try AppDelegate.sharedAppDelegate.coreDataStack.managedContext.save()
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        guard let safeUrl = URL(string: postData[indexPath.row - 1].urlToWebPage ?? "https://www.google.com") else { return }
+        
         let safariViewController = SFSafariViewController(url: safeUrl)
         present(safariViewController, animated: true)
     }

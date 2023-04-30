@@ -2,7 +2,7 @@
 //  PostEntity+CoreDataClass.swift
 //  Navigation
 //
-//  Created by Dimitry Khristenko on 26.04.2023.
+//  Created by Dimitry Khristenko on 30.04.2023.
 //
 //
 

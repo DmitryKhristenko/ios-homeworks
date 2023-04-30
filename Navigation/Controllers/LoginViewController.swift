@@ -132,7 +132,7 @@ final class LoginViewController: UIViewController {
     
     private func setupView() {
         view.addSubview(scrollView)
-        // tap gesture recognizer to dismiss keyboard
+        // tap gesture recogniser to dismiss keyboard
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         contentView.addGestureRecognizer(tapGesture)
         [contentView, logoImageView, verticalStackView, passwordErrorLabel, loginButton].forEach { scrollView.addSubview($0); $0.translatesAutoresizingMaskIntoConstraints = false }
@@ -236,27 +236,26 @@ final class LoginViewController: UIViewController {
         // This method sets up the constraints based on the current device orientation. The "setupConstraints" method activates the appropriate constraints and "viewWillTransition" method deactivates constraints that are not needed for the current orientation.
         switch UIApplication.shared.windows.first?.windowScene?.interfaceOrientation {
         case .portrait:
-            // scrollView
             scrollViewLeadingPortrait = scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
             scrollViewTrailingPortrait = scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-            // logoImageView
+
             logoImageViewPortrait = logoImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 200)
-            // verticalStackView
+
             verticalStackViewPortrait = verticalStackView.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 100)
-            // loginButton
+
             loginButtonPortrait = loginButton.topAnchor.constraint(equalTo: verticalStackView.bottomAnchor, constant: 27)
             
             activateOrDeactivateConstraints(shouldActivate: true, constraints: [scrollViewLeadingPortrait, scrollViewTrailingPortrait, logoImageViewPortrait, verticalStackViewPortrait, loginButtonPortrait])
             
         case .landscapeLeft, .landscapeRight:
-            // scrollView
+
             scrollViewLeadingLandscape = scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
             scrollViewTrailingLandscape = scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
-            // logoImageView
+
             logoImageViewLandscape = logoImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20)
-            // verticalStackView
+
             verticalStackViewLandscape = verticalStackView.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 50)
-            // loginButton
+
             loginButtonLandscape = loginButton.topAnchor.constraint(equalTo: verticalStackView.bottomAnchor, constant: 22)
             
             activateOrDeactivateConstraints(shouldActivate: true, constraints: [scrollViewLeadingLandscape, scrollViewTrailingLandscape, logoImageViewLandscape, verticalStackViewLandscape, loginButtonLandscape])

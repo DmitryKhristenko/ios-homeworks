@@ -8,7 +8,7 @@
 import UIKit
 
 protocol HeartButtonDelegate: AnyObject {
-    func changeLikesCounter(index: Int) -> Bool
+    func changeLikesCounter(index: Int)
 }
 
 final class PostTableViewCell: UITableViewCell {
@@ -18,8 +18,6 @@ final class PostTableViewCell: UITableViewCell {
     private let context = PostEntity(context: AppDelegate.sharedAppDelegate.coreDataStack.managedContext)
     
     static weak var heartButtonDelegate: HeartButtonDelegate?
-    
-    var indexForCounter = 0
     
     private lazy var contentWhiteView: UIView = {
         $0.backgroundColor = .white
@@ -51,14 +49,16 @@ final class PostTableViewCell: UITableViewCell {
         return $0
     }(UILabel())
     
-    lazy var heartButton = HeartButton()
-    
-    var buttonTapCallback: (() -> ())?
-    
     lazy var viewsLabel: UILabel = {
         $0.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         return $0
     }(UILabel())
+    
+    lazy var heartButton = HeartButton()
+    
+    var indexForCounter = 0
+    
+    var buttonTapCallback: (() -> ())?
     
     // MARK: - Init
     
@@ -74,25 +74,19 @@ final class PostTableViewCell: UITableViewCell {
     
     // MARK: - Methods
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        resetAnimation()
-    }
-    
-    func resetAnimation() {
+    func setupPostCell(model: PostEntity, isAnimated: Bool) {
+        guard let safeImage = model.image else { return }
         
-        heartButton.layer.removeAllAnimations()
-        heartButton.transform = .identity
-        heartButton.setUnlikedImage()
-        
+        authorLabel.text = model.author
+        postImageView.image = UIImage(named: safeImage)
+        descriptionLabel.text = model.postDescription
+        likesLabel.text = "Likes: \(model.likes)"
+        viewsLabel.text = "Views: \(model.views)"
+        isAnimated ? heartButton.flipLikedState(isLiked: model.isLiked) : model.isLiked ? heartButton.setImage(isLikedImage: true) : heartButton.setImage(isLikedImage: false)
     }
     
     @objc private func handleHeartButtonTap(_ sender: UIButton) {
-        guard let button = sender as? HeartButton else { return }
-        let tapIndex = PostTableViewCell.heartButtonDelegate?.changeLikesCounter(index: indexForCounter)
-        print("tapIndex = \(String(describing: tapIndex))")
         buttonTapCallback?()
-        //        AppDelegate.sharedAppDelegate.coreDataStack.saveContext()
     }
     
     private func setupView() {
@@ -120,9 +114,9 @@ final class PostTableViewCell: UITableViewCell {
             likesLabel.leadingAnchor.constraint(equalTo: descriptionLabel.leadingAnchor),
             likesLabel.bottomAnchor.constraint(equalTo: contentWhiteView.bottomAnchor, constant: -10),
             
-            heartButton.heightAnchor.constraint(equalToConstant: 40),
-            heartButton.widthAnchor.constraint(equalToConstant: 40),
-            heartButton.leadingAnchor.constraint(equalTo: likesLabel.trailingAnchor, constant: 7),
+            heartButton.heightAnchor.constraint(equalToConstant: 32),
+            heartButton.widthAnchor.constraint(equalToConstant: 32),
+            heartButton.leadingAnchor.constraint(equalTo: likesLabel.trailingAnchor, constant: 5),
             heartButton.centerYAnchor.constraint(equalTo: likesLabel.centerYAnchor),
             
             viewsLabel.trailingAnchor.constraint(equalTo: descriptionLabel.trailingAnchor),

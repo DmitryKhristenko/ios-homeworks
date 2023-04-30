@@ -7,12 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5B86C74129F7CD7F00EAAF84 /* PostLikesAndViewsCounter.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5B86C73F29F7CD7F00EAAF84 /* PostLikesAndViewsCounter.xcdatamodeld */; };
 		5B86C74329F7D82D00EAAF84 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B86C74229F7D82D00EAAF84 /* CoreDataStack.swift */; };
 		5B86C74D29F8253400EAAF84 /* HeartButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B86C74C29F8253400EAAF84 /* HeartButton.swift */; };
-		5B86C75029F92FE800EAAF84 /* PostEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B86C74E29F92FE800EAAF84 /* PostEntity+CoreDataClass.swift */; };
 		5B86C75329F9A3CD00EAAF84 /* PhotosMedia.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B86C75229F9A3CD00EAAF84 /* PhotosMedia.xcassets */; };
 		5B86C75529FAC57700EAAF84 /* AnimationForImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B86C75429FAC57700EAAF84 /* AnimationForImage.swift */; };
+		5B86C75B29FE9CE700EAAF84 /* PostEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B86C75929FE9CE700EAAF84 /* PostEntity+CoreDataClass.swift */; };
+		5B86C75C29FE9CE700EAAF84 /* PostEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B86C75A29FE9CE700EAAF84 /* PostEntity+CoreDataProperties.swift */; };
+		5B92754F29FEC18700077636 /* PostEntity.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5B92754D29FEC18700077636 /* PostEntity.xcdatamodeld */; };
 		B506C65329DC27310023E2CB /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B506C65229DC27310023E2CB /* PostTableViewCell.swift */; };
 		B506C65529DDCF450023E2CB /* PhotosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B506C65429DDCF450023E2CB /* PhotosTableViewCell.swift */; };
 		B506C65729DDD1D00023E2CB /* Photos.swift in Sources */ = {isa = PBXBuildFile; fileRef = B506C65629DDD1D00023E2CB /* Photos.swift */; };
@@ -33,12 +34,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5B86C74029F7CD7F00EAAF84 /* PostLikesAndViewsCounter.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PostLikesAndViewsCounter.xcdatamodel; sourceTree = "<group>"; };
 		5B86C74229F7D82D00EAAF84 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		5B86C74C29F8253400EAAF84 /* HeartButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartButton.swift; sourceTree = "<group>"; };
-		5B86C74E29F92FE800EAAF84 /* PostEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEntity+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		5B86C75229F9A3CD00EAAF84 /* PhotosMedia.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = PhotosMedia.xcassets; sourceTree = "<group>"; };
 		5B86C75429FAC57700EAAF84 /* AnimationForImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationForImage.swift; sourceTree = "<group>"; };
+		5B86C75929FE9CE700EAAF84 /* PostEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		5B86C75A29FE9CE700EAAF84 /* PostEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		5B92754E29FEC18700077636 /* PostEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PostEntity.xcdatamodel; sourceTree = "<group>"; };
 		B506C65229DC27310023E2CB /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostTableViewCell.swift; path = Navigation/Model/PostTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		B506C65429DDCF450023E2CB /* PhotosTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosTableViewCell.swift; sourceTree = "<group>"; };
 		B506C65629DDD1D00023E2CB /* Photos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photos.swift; sourceTree = "<group>"; };
@@ -74,8 +76,9 @@
 		5B86C73E29F7CC9800EAAF84 /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
-				5B86C74E29F92FE800EAAF84 /* PostEntity+CoreDataClass.swift */,
-				5B86C73F29F7CD7F00EAAF84 /* PostLikesAndViewsCounter.xcdatamodeld */,
+				5B86C75929FE9CE700EAAF84 /* PostEntity+CoreDataClass.swift */,
+				5B86C75A29FE9CE700EAAF84 /* PostEntity+CoreDataProperties.swift */,
+				5B92754D29FEC18700077636 /* PostEntity.xcdatamodeld */,
 				5B86C74229F7D82D00EAAF84 /* CoreDataStack.swift */,
 			);
 			path = "Core Data";
@@ -253,6 +256,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B86C75C29FE9CE700EAAF84 /* PostEntity+CoreDataProperties.swift in Sources */,
 				5B86C74D29F8253400EAAF84 /* HeartButton.swift in Sources */,
 				B581687229B9D33000A52DE0 /* FeedViewController.swift in Sources */,
 				B581689829D4577100A52DE0 /* Extensions.swift in Sources */,
@@ -264,14 +268,14 @@
 				B581687029B9D33000A52DE0 /* SceneDelegate.swift in Sources */,
 				B5A0757329E6AAAB00CD4CA8 /* PhotosViewController.swift in Sources */,
 				B581689029CA138400A52DE0 /* ProfileViewController.swift in Sources */,
+				5B86C75B29FE9CE700EAAF84 /* PostEntity+CoreDataClass.swift in Sources */,
 				B581688429B9F93700A52DE0 /* PostViewController.swift in Sources */,
 				5B86C75529FAC57700EAAF84 /* AnimationForImage.swift in Sources */,
 				B5B4BD5129D6D20300652889 /* LoginViewController.swift in Sources */,
 				5B86C74329F7D82D00EAAF84 /* CoreDataStack.swift in Sources */,
-				5B86C74129F7CD7F00EAAF84 /* PostLikesAndViewsCounter.xcdatamodeld in Sources */,
-				5B86C75029F92FE800EAAF84 /* PostEntity+CoreDataClass.swift in Sources */,
 				B5A0757529E6BE7C00CD4CA8 /* PhotosCollectionViewCell.swift in Sources */,
 				B581688E29CA134000A52DE0 /* ProfileTableHeaderView.swift in Sources */,
+				5B92754F29FEC18700077636 /* PostEntity.xcdatamodeld in Sources */,
 				B506C65329DC27310023E2CB /* PostTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -473,13 +477,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		5B86C73F29F7CD7F00EAAF84 /* PostLikesAndViewsCounter.xcdatamodeld */ = {
+		5B92754D29FEC18700077636 /* PostEntity.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				5B86C74029F7CD7F00EAAF84 /* PostLikesAndViewsCounter.xcdatamodel */,
+				5B92754E29FEC18700077636 /* PostEntity.xcdatamodel */,
 			);
-			currentVersion = 5B86C74029F7CD7F00EAAF84 /* PostLikesAndViewsCounter.xcdatamodel */;
-			path = PostLikesAndViewsCounter.xcdatamodeld;
+			currentVersion = 5B92754E29FEC18700077636 /* PostEntity.xcdatamodel */;
+			path = PostEntity.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

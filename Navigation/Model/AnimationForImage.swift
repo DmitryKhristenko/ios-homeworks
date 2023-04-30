@@ -39,10 +39,7 @@ struct AnimationForImage {
         blurView.frame = view.bounds
         blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
-        view.addSubview(blurView)
-        view.addSubview(animatingImageView)
-        view.addSubview(crossButton)
-        
+        [blurView, animatingImageView, crossButton].forEach { view.addSubview($0) }
         setupConstraintsForAnimation(view: view)
         
         animatingImageView.image = image
