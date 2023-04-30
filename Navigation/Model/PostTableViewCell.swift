@@ -31,7 +31,7 @@ final class PostTableViewCell: UITableViewCell {
     }(UILabel())
     
     lazy var postImageView: UIImageView = {
-        $0.backgroundColor = .black
+        $0.backgroundColor = UIColor(hex: "ebebeb")
         $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
         return $0
